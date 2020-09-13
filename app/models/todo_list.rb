@@ -19,7 +19,7 @@ class TodoList < ApplicationRecord
     when 0
       "Not started"
     when 100
-      "Complete"
+      "Complete!"
     else
       "In progress"
     end
