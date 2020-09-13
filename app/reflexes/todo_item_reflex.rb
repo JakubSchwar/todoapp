@@ -12,4 +12,9 @@ class TodoItemReflex < ApplicationReflex
     todo_item.update(completed: false, completed_at: nil)
   end
 
+  def mark_delete
+    todo_item = TodoItem.find(element.dataset.id)
+    todo_item.destroy
+  end
+
 end
