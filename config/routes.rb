@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   devise_for :users
+  root controller: :todo_lists, action: :index
   resources :todo_lists do
     resources :todo_items
   end
