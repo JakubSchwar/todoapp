@@ -25,12 +25,12 @@
   </div>  
 </div>
 
-<div class="card-body">
+<div class="card-body" data-controller="todo-item">
   <div class="progress mb-4">
     <div class="progress-bar bg-info" role="progressbar" style="width: <%= @todo_list.percent_complete %>%" aria-valuenow="<%= @todo_list.percent_complete%>%" aria-valuemin="0" aria-valuemax="100"></div>
   </div>
 
-  <%= form_for([@todo_list, @todo_item]) do |f| %>
+  <%= form_for([@todo_list, @todo_item], data: { reflex: "submit->TodoItem#create"}) do |f| %>
     <div class="input-group mb-4">
       <%= f.text_field :description, class: "form-control", placeholder: "Add a todo item" %>
       <div class="input-group-append">
