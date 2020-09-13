@@ -13,9 +13,11 @@
               <b><%= @todo_list.title %></b>
               <span class="badge badge-<%= @todo_list.badge_color %>"><%= @todo_list.status %></span>
             </h5>
+          <% if @todo_list.todo_items.present? %>
             <p class="text-secondary m-0">
               <%= @todo_list.percent_complete %> Complete (<%= @todo_list.completed_items %>/<%= @todo_list.total_items %> Todo Items)
             </p>
+          <% end %>
         </div>
         <div>
           <%= link_to "Edit", edit_todo_list_path(@todo_list), class: "btn btn-secondary" %>
@@ -32,37 +34,57 @@
 
   <%= form_for([@todo_list, @todo_item]) do |f| %>
     <div class="input-group mb-4">
-      <%= f.text_field :description, class: "form-control", placeholder: "Add a todo item" %>
+      <%= f.text_field :description, required: true, class: "form-control", placeholder: "Add a todo item" %>
       <div class="input-group-append">
         <%= f.submit "Add", class: "btn btn-primary input-group-btn" %>
       </div>
     </div>
   <% end %>
 
+  
+  <% if @todo_list.todo_items.blank? %>
+    <div class="d-flex justify-content-center justify-items-center">
+      <p class="text-muted text-center">Add a new tasks</p>
+    </div>
+  <% end %>
+  
   <ul class="list-group">
   <% @todo_list.todo_items.each do |todo_item| %>
     <% if todo_item.completed? %>
-    <li class="list-group-item bg-light">
-          <div class="d-flex justify-content-between">
-            <span class="text-muted">
-              <em><%= todo_item.description %></em>
-            </span>
-              <%= link_to "#", class: "btn btn-dark", data: { reflex: "click->TodoItem#mark_incomplete", id: todo_item.id } do %>
-              <i class="fas fa-undo-alt"></i>
-              <% end %>
-          </div>
-        </li>
+      <li class="list-group-item d-flex justify-content-between bg-light">
+        <div class="justify-content-start">
+          <span class="text-muted">
+            <em><%= todo_item.description %></em>
+          </span>
+        </div>
+        <div class="justify-content-star">
+          <%= link_to "#", class: "btn btn-dark", data: { reflex: "click->TodoItem#mark_incomplete", id: todo_item.id } do %>
+            <i class="fas fa-undo-alt"></i>
+          <% end %>
+          
+          <%= link_to "#", class: "btn btn-danger", data: { reflex: "click->TodoItem#mark_delete", id: todo_item.id } do %>
+            <i class="fas fa-trash-alt"></i>
+          <% end %>
+        </div>
+      </li>
     <% else %>
-      <li class="list-group-item">
-          <div class="d-flex justify-content-between">
-            <span>
-              <%= todo_item.description %>
-            </span>
-              <%= link_to "#", class: "btn btn-info", data: { reflex: "click->TodoItem#mark_complete", id: todo_item.id } do %>
-              <i class="fas fa-check"></i>
-              <% end %>
-          </div>
-        </li>
+      <li class="list-group-item d-flex justify-content-between">
+        <div class="justify-content-star">
+          <span class="text-muted">
+            <em><%= todo_item.description %></em>
+          </span>
+        </div>
+        <div class="justify-content-star">
+          <%= link_to "#", class: "btn btn-info", data: { reflex: "click->TodoItem#mark_complete", id: todo_item.id } do %>
+            <i class="fas fa-check"></i>
+          <% end %>
+
+          <%= link_to "#", class: "btn btn-danger", data: { reflex: "click->TodoItem#mark_delete", id: todo_item.id } do %>
+            <i class="fas fa-trash-alt"></i>
+          <% end %>
+          
+        </div>
+      </li>
     <% end %>
   <% end %>
 </ul>
